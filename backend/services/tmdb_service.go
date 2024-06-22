@@ -23,6 +23,10 @@ func FetchMovieFromTMDB(movieID string) (*Movie, error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("error: unable to fetch movie data, status code: %d", resp.StatusCode)
+	}
+
 	var movie Movie
 	if err := json.NewDecoder(resp.Body).Decode(&movie); err != nil {
 		return nil, err
