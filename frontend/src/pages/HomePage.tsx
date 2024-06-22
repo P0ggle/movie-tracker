@@ -3,14 +3,19 @@ import { fetchMovie } from "../services/api";
 import MovieCard from "../components/MovieCard";
 
 const HomePage: React.FC = () => {
-    const [movie, setMovie] = useState<{ title: string; poster: string } | null>(
-        null,
-    );
+    const [movie, setMovie] = useState<{
+        title: string;
+        poster_path: string;
+    } | null>(null);
 
     useEffect(() => {
         const loadMovie = async () => {
-            const movieData = await fetchMovie("27205"); // Replace '123' with a valid movie ID
-            setMovie(movieData);
+            try {
+                const movieData = await fetchMovie("27205");
+                setMovie(movieData);
+            } catch (error) {
+                console.error("Error fetching movie:", error);
+            }
         };
         loadMovie();
     }, []);
@@ -18,7 +23,7 @@ const HomePage: React.FC = () => {
     return (
         <div>
             {movie ? (
-                <MovieCard title={movie.title} poster={movie.poster} />
+                <MovieCard title={movie.title} poster_path={movie.poster_path} />
             ) : (
                 <p>Loading...</p>
             )}
