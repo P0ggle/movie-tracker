@@ -1,34 +1,56 @@
-import React, { useState, useEffect } from "react";
-import { fetchMovie } from "../services/api";
+import React, { useState } from "react";
+import { searchMovie } from "../services/api";
 import MovieCard from "../components/MovieCard";
 
 const HomePage: React.FC = () => {
-    const [movie, setMovie] = useState<{
-        title: string;
-        poster_path: string;
-    } | null>(null);
+  const [movie, setMovie] = useState<{
+    id: number;
+    title: string;
+    poster_path: string;
+  } | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-    useEffect(() => {
-        const loadMovie = async () => {
-            try {
-                const movieData = await fetchMovie("27205");
-                setMovie(movieData);
-            } catch (error) {
-                console.error("Error fetching movie:", error);
-            }
-        };
-        loadMovie();
-    }, []);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
-    return (
-        <div>
-            {movie ? (
-                <MovieCard title={movie.title} poster_path={movie.poster_path} />
-            ) : (
-                <p>Loading...</p>
-            )}
-        </div>
-    );
+  const handleSearchSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (searchTerm) {
+      try {
+        const movieData = await searchMovie(searchTerm);
+        setMovie(movieData);
+      } catch (error) {
+        console.error("Error searching movie:", error);
+        setMovie(null); // Clear movie if there's an error
+      }
+    }
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSearchSubmit}>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="Search for a movie..."
+        />
+        <button type="submit">Search</button>
+      </form>
+      <div>
+        {movie ? (
+          <MovieCard
+            key={movie.id}
+            title={movie.title}
+            poster_path={movie.poster_path}
+          />
+        ) : (
+          <p>No movie found</p>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default HomePage;

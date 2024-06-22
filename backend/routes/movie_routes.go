@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterMovieRoutes(r *gin.Engine) {
-	r.GET("/movies/:id", controllers.GetMovie)
+func RegisterMovieRoutes(router *gin.Engine) {
+	router.GET("/search", controllers.SearchMovie)
+	router.GET("/movies/:id", controllers.GetMovie)
 }
