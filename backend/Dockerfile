@@ -1,18 +1,23 @@
 # backend/Dockerfile
 FROM golang:1.22-alpine
 
+# Set the working directory
 WORKDIR /app
 
-RUN apk add --no-cache git
+# Copy go.mod and go.sum files
+COPY go.mod go.sum ./
 
-COPY go.mod ./
-COPY go.sum ./
+# Download dependencies
 RUN go mod download
 
-RUN go install github.com/air-verse/air@latest
-
+# Copy the source code
 COPY . .
 
-CMD ["air"]
+# Install Air 
+RUN go install github.com/air-verse/air@latest
 
+# Expose the application port
+EXPOSE 8080
 
+# Run Air
+CMD ["air", "-c", ".air.toml"]

@@ -1,9 +1,0 @@
-# backend/air.toml
-[build]
-cmd = "go build -o ./tmp/main"
-bin = "./tmp/main"
-include_ext = ["go"]
-exclude_dir = ["vendor", "tmp"]
-exclude_file = ["air.toml"]
-follow_symlink = true
-dirs = ["."]

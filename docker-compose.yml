@@ -15,15 +15,16 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
+    working_dir: /app
     ports:
       - "8080:8080"
-    depends_on:
-      - db
     environment:
       DATABASE_URL: postgres://postgres:password@db:5432/my_movie_db?sslmode=disable
     volumes:
       - ./backend:/app
-      - /app/tmp
+    depends_on:
+      - db
 
   frontend:
     build:
