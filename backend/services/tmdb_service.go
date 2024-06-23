@@ -3,9 +3,11 @@ package services
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type Movie struct {
@@ -42,6 +44,9 @@ func FetchMovieFromTMDB(movieID string) (*Movie, error) {
 
 func SearchMovieByName(name string) (*Movie, error) {
 	apiKey := os.Getenv("TMDB_API_KEY")
+
+	name = strings.ReplaceAll(strings.TrimSpace(name), " ", ",")
+
 	url := fmt.Sprintf("https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s", apiKey, name)
 
 	resp, err := http.Get(url)
@@ -55,11 +60,11 @@ func SearchMovieByName(name string) (*Movie, error) {
 	}
 
 	// Log the raw response
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-	// log.Printf("TMDB API Response: %s", body)
+	log.Printf("TMDB API Response: %s", body)
 
 	var searchResults SearchResults
 	if err := json.Unmarshal(body, &searchResults); err != nil {
