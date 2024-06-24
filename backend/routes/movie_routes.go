@@ -7,6 +7,6 @@ import (
 )
 
 func RegisterMovieRoutes(router *gin.Engine) {
-	router.GET("/search", controllers.SearchMovie)
+	router.GET("/search", controllers.SearchContent)
 	router.GET("/movies/:id", controllers.GetMovie)
 }

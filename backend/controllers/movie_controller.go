@@ -4,6 +4,7 @@ import (
 	"log"
 	"movie-app/services"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,18 +20,25 @@ func GetMovie(c *gin.Context) {
 	c.JSON(http.StatusOK, movie)
 }
 
-func SearchMovie(c *gin.Context) {
+func SearchContent(c *gin.Context) {
 	name := c.Query("name")
+	isMovieStr := c.DefaultQuery("isMovie", "true")
 	if name == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "name query parameter is required"})
 		return
 	}
 
-	movie, err := services.SearchMovieByName(name)
+	isMovie, err := strconv.ParseBool(isMovieStr)
 	if err != nil {
-		log.Println("Error searching movie:", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "isMovie query parameter must be a boolean"})
+		return
+	}
+
+	content, err := services.SearchByName(name, isMovie)
+	if err != nil {
+		log.Println("Error searching content:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, movie)
+	c.JSON(http.StatusOK, content)
 }

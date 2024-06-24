@@ -42,13 +42,17 @@ func FetchMovieFromTMDB(movieID string) (*Movie, error) {
 	return &movie, nil
 }
 
-func SearchMovieByName(name string) (*Movie, error) {
+func SearchByName(name string, isMovie bool) (*Movie, error) {
 	apiKey := os.Getenv("TMDB_API_KEY")
 
 	name = strings.ReplaceAll(strings.TrimSpace(name), " ", ",")
 
-	url := fmt.Sprintf("https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s", apiKey, name)
-
+	var url string
+	if isMovie {
+		url = fmt.Sprintf("https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s", apiKey, name)
+	} else {
+		url = fmt.Sprintf("https://api.themoviedb.org/3/search/tv?api_key=%s&query=%s", apiKey, name)
+	}
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
