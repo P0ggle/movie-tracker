@@ -5,7 +5,8 @@ import MovieCard from "../components/MovieCard";
 const HomePage: React.FC = () => {
   const [movie, setMovie] = useState<{
     id: number;
-    title: string;
+    title?: string;
+    original_name?: string;
     poster_path: string;
   } | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -27,7 +28,7 @@ const HomePage: React.FC = () => {
         setMovie(movieData);
       } catch (error) {
         console.error("Error searching movie:", error);
-        setMovie(null);
+        setMovie(null); // Clear movie if there's an error
       }
     }
   };
@@ -68,6 +69,7 @@ const HomePage: React.FC = () => {
           <MovieCard
             key={movie.id}
             title={movie.title}
+            original_name={movie.original_name}
             poster_path={movie.poster_path}
           />
         ) : (
@@ -79,4 +81,5 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+
 

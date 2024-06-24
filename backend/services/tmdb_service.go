@@ -11,9 +11,10 @@ import (
 )
 
 type Movie struct {
-	ID     int    `json:"id"`
-	Title  string `json:"title"`
-	Poster string `json:"poster_path"`
+	ID           int    `json:"id"`
+	Title        string `json:"title,omitempty"`
+	OriginalName string `json:"original_name,omitempty"`
+	PosterPath   string `json:"poster_path"`
 }
 
 type SearchResults struct {
