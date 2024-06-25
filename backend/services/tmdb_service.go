@@ -11,10 +11,11 @@ import (
 )
 
 type Movie struct {
-	ID           int    `json:"id"`
-	Title        string `json:"title,omitempty"`
-	OriginalName string `json:"original_name,omitempty"`
-	PosterPath   string `json:"poster_path"`
+	ID            int    `json:"id"`
+	OriginalTitle string `json:"original_title,omitempty"`
+	OriginalName  string `json:"original_name,omitempty"`
+	PosterPath    string `json:"poster_path"`
+	Overview      string `json:"overview"`
 }
 
 type SearchResults struct {
@@ -43,18 +44,13 @@ func FetchMovieFromTMDB(movieID string) (*Movie, error) {
 	return &movie, nil
 }
 
-func SearchByName(name string, isMovie bool) (*Movie, error) {
+func SearchByName(name string) (*Movie, error) {
 	apiKey := os.Getenv("TMDB_API_KEY")
 
 	name = strings.ReplaceAll(strings.TrimSpace(name), " ", ",")
 
-	var url string
-	if isMovie {
-		url = fmt.Sprintf("https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s", apiKey, name)
-	} else {
-		url = fmt.Sprintf("https://api.themoviedb.org/3/search/tv?api_key=%s&query=%s", apiKey, name)
-	}
-	resp, err := http.Get(url)
+	url := fmt.Sprintf("https://api.themoviedb.org/3/search/multi?api_key=%s&query=%s", apiKey, name)
+	resp, err := http.DefaultClient.Get(url)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +65,7 @@ func SearchByName(name string, isMovie bool) (*Movie, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("TMDB API Response: %s", body)
+	// log.Printf("TMDB API Response: %s", body)
 
 	var searchResults SearchResults
 	if err := json.Unmarshal(body, &searchResults); err != nil {
@@ -80,5 +76,6 @@ func SearchByName(name string, isMovie bool) (*Movie, error) {
 		return nil, fmt.Errorf("no results found")
 	}
 
+	log.Printf("New Response: %+v", &searchResults.Results[0])
 	return &searchResults.Results[0], nil
 }

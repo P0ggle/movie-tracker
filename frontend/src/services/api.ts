@@ -7,8 +7,8 @@ export const fetchMovie = async (id: string) => {
     return response.data;
 };
 
-export const searchMovie = async (name: string, type: string) => {
-    const response = await axios.get(`${API_URL}/search`, { params: { name, isMovie: type === "movie" } });
+export const searchMovie = async (name: string) => {
+    const response = await axios.get(`${API_URL}/search`, { params: { name } });
     return response.data;
 };
 
