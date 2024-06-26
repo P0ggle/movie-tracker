@@ -76,6 +76,6 @@ func SearchByName(name string) (*Movie, error) {
 		return nil, fmt.Errorf("no results found")
 	}
 
-	log.Printf("New Response: %+v", &searchResults.Results[0])
+	log.Printf("TMDB New Response: %+v", &searchResults.Results[0])
 	return &searchResults.Results[0], nil
 }
