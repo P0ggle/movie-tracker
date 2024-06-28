@@ -5,6 +5,7 @@ import (
 	"log"
 	"movie-app/routes"
 	"os"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -27,8 +28,15 @@ func main() {
 
 	r := gin.Default()
 
-	// Apply the CORS middleware
-	r.Use(cors.Default())
+	// Apply the CORS middleware with detailed configuration
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000", "http://172.26.35.2:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	// Pass the db connection to the routes
 	routes.RegisterRoutes(r, db)
