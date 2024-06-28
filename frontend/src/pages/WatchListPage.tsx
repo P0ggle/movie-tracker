@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getMoviesToWatch } from "../services/api";
+import "./WatchListPage.css";
 
 interface MovieToWatch {
     id: number;
@@ -25,12 +26,12 @@ const WatchListPage: React.FC = () => {
     }, []);
 
     return (
-        <div>
+        <div className="watch-list-page">
             <h1>My Watch List</h1>
-            <div>
+            <div className="movies-grid">
                 {movies.length > 0 ? (
                     movies.map((movie) => (
-                        <div key={movie.id}>
+                        <div className="movie-card" key={movie.id}>
                             <h3>{movie.name}</h3>
                             <img
                                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -48,4 +49,3 @@ const WatchListPage: React.FC = () => {
 };
 
 export default WatchListPage;
-

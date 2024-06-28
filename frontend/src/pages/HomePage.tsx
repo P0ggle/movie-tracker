@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
         setMovie(movieData);
       } catch (error) {
         console.error("Error searching movie:", error);
-        setMovie(null);
+        setMovie(null); // Clear movie if there's an error
       }
     }
   };

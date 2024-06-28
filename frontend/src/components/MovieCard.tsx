@@ -20,8 +20,8 @@ const MovieCard: React.FC<MovieCardProps> = ({
     return (
         <div>
             <h3>{original_title || original_name}</h3>
-            <p>{overview}</p>
             <img src={posterUrl} alt={original_title || original_name} />
+            <p>{overview}</p>
         </div>
     );
 };
