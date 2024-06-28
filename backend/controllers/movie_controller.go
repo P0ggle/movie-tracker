@@ -1,12 +1,20 @@
 package controllers
 
 import (
+	"database/sql"
 	"log"
+	"movie-app/models"
 	"movie-app/services"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
+
+type AddMovieRequest struct {
+	Name       string `json:"name" binding:"required"`
+	PosterPath string `json:"poster_path" binding:"required"`
+}
 
 func GetMovie(c *gin.Context) {
 	movieID := c.Param("id")
@@ -33,4 +41,57 @@ func SearchContent(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, content)
+}
+
+func AddMovieToList(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var request AddMovieRequest
+		if err := c.ShouldBindJSON(&request); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		movie := models.MovieToWatch{
+			Name:       request.Name,
+			PosterPath: request.PosterPath,
+			TimeAdded:  time.Now(),
+		}
+
+		query := `INSERT INTO movies_to_watch (name, poster_path, time_added) VALUES ($1, $2, $3) RETURNING id`
+		err := db.QueryRow(query, movie.Name, movie.PosterPath, movie.TimeAdded).Scan(&movie.ID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, movie)
+	}
+}
+
+func GetMoviesToWatch(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		rows, err := db.Query("SELECT id, name, poster_path, time_added FROM movies_to_watch")
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		defer rows.Close()
+
+		var movies []models.MovieToWatch
+		for rows.Next() {
+			var movie models.MovieToWatch
+			if err := rows.Scan(&movie.ID, &movie.Name, &movie.PosterPath, &movie.TimeAdded); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
+			}
+			movies = append(movies, movie)
+		}
+
+		if err := rows.Err(); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, movies)
+	}
 }
