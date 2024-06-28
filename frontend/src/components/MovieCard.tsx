@@ -7,7 +7,12 @@ interface MovieCardProps {
     overview: string;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ original_title, original_name, poster_path, overview }) => {
+const MovieCard: React.FC<MovieCardProps> = ({
+    original_title,
+    original_name,
+    poster_path,
+    overview,
+}) => {
     const posterUrl = poster_path
         ? `https://image.tmdb.org/t/p/w500${poster_path}`
         : "placeholder_image_url";
@@ -22,4 +27,3 @@ const MovieCard: React.FC<MovieCardProps> = ({ original_title, original_name, po
 };
 
 export default MovieCard;
-

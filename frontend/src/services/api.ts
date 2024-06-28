@@ -12,3 +12,13 @@ export const searchMovie = async (name: string) => {
     return response.data;
 };
 
+export const addMovieToList = async (name: string, posterPath: string) => {
+    const response = await axios.post(`${API_URL}/add-to-list`, { name, poster_path: posterPath });
+    return response.data;
+};
+
+export const getMoviesToWatch = async () => {
+    const response = await axios.get(`${API_URL}/movies-to-watch`);
+    return response.data;
+};
+

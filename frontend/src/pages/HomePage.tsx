@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { searchMovie } from "../services/api";
+import { searchMovie, addMovieToList } from "../services/api";
 import MovieCard from "../components/MovieCard";
+import { Link } from "react-router-dom";
 
 const HomePage: React.FC = () => {
   const [movie, setMovie] = useState<{
@@ -29,6 +30,23 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const handleAddToList = async () => {
+    if (movie) {
+      try {
+        await addMovieToList(
+          movie.original_title || movie.original_name || "",
+          movie.poster_path,
+        );
+        alert(
+          `${movie.original_title || movie.original_name} added to your list!`,
+        );
+      } catch (error) {
+        console.error("Error adding movie to list:", error);
+        alert("Failed to add movie to list.");
+      }
+    }
+  };
+
   return (
     <div>
       <form onSubmit={handleSearchSubmit}>
@@ -42,16 +60,20 @@ const HomePage: React.FC = () => {
       </form>
       <div>
         {movie ? (
-          <MovieCard
-            original_title={movie.original_title}
-            original_name={movie.original_name}
-            poster_path={movie.poster_path}
-            overview={movie.overview}
-          />
+          <div>
+            <MovieCard
+              original_title={movie.original_title}
+              original_name={movie.original_name}
+              poster_path={movie.poster_path}
+              overview={movie.overview}
+            />
+            <button onClick={handleAddToList}>Add to List</button>
+          </div>
         ) : (
           <p>No Movie or TV show found</p>
         )}
       </div>
+      <Link to="/watch-list">Go to Watch List</Link>
     </div>
   );
 };
