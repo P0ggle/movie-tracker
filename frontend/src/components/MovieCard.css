@@ -1,4 +1,3 @@
-/* MovieCard.css */
 .movie-card {
   background-color: #333333; /* Dark background for the card */
   border-radius: 10px;
@@ -16,19 +15,30 @@
   display: block;
 }
 
+.movie-card-content {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .movie-card h3 {
   font-size: 1em;
-  margin: 10px 0;
-  height: 4.5em; /* Fixed height to accommodate one or two lines of text */
+  margin: 10px 0 5px;
   line-height: 1.2em;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: normal; /* Allow wrapping */
+  white-space: normal;
 }
 
 .movie-card p {
   font-size: 0.9em;
   color: #bbbbbb; /* Light text color for the description */
-  padding: 10px;
-  margin: 0;
+  margin: 5px 0;
+}
+
+.added-date {
+  font-size: 0.8em;
+  color: #bbbbbb;
+  margin-top: 5px;
 }

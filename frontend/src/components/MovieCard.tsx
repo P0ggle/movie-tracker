@@ -5,7 +5,8 @@ interface MovieCardProps {
     original_title?: string;
     original_name?: string;
     poster_path: string;
-    overview: string;
+    overview?: string;
+    addedDate?: string;
     onClick: () => void;
 }
 
@@ -13,6 +14,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
     original_title,
     original_name,
     poster_path,
+    addedDate,
     onClick,
 }) => {
     const placeholderImageUrl =
@@ -27,9 +29,13 @@ const MovieCard: React.FC<MovieCardProps> = ({
                 src={posterUrl}
                 alt={original_title || original_name || "Movie Poster"}
             />
-            <h3>{original_title || original_name}</h3>
+            <div className="movie-card-content">
+                <h3>{original_title || original_name}</h3>
+                {addedDate && <p className="added-date">Added on: {new Date(addedDate).toLocaleString()}</p>}
+            </div>
         </div>
     );
 };
 
 export default MovieCard;
+

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getMoviesToWatch } from "../services/api";
+import MovieCard from "../components/MovieCard";
 import "./WatchListPage.css";
 
 interface MovieToWatch {
   id: number;
   name: string;
   poster_path: string;
-  time_added: string;
+  time_added?: string;
 }
 
 const WatchListPage: React.FC = () => {
@@ -30,21 +31,18 @@ const WatchListPage: React.FC = () => {
     <div className="watchlist-page">
       <div className="watchlist-header">
         <h1>My Watch List</h1>
-        <Link to="/" className="button-style back-button">
-          Back to Home
-        </Link>
+        <Link to="/" className="button-style back-button">Back to Home</Link>
       </div>
       <div className="watchlist-movies-grid">
         {movies.length > 0 ? (
           movies.map((movie) => (
-            <div className="watchlist-movie-card" key={movie.id}>
-              <h3>{movie.name}</h3>
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.name}
-              />
-              <p>Added on: {new Date(movie.time_added).toLocaleString()}</p>
-            </div>
+            <MovieCard
+              key={movie.id}
+              original_title={movie.name}
+              poster_path={movie.poster_path}
+              addedDate={movie.time_added}
+              onClick={() => console.log(`Clicked on movie ID: ${movie.id}`)}
+            />
           ))
         ) : (
           <p>No movies in your watch list.</p>
@@ -58,3 +56,4 @@ const WatchListPage: React.FC = () => {
 };
 
 export default WatchListPage;
+

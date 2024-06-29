@@ -34,6 +34,10 @@
   transition: background-color 0.3s;
 }
 
+.search-form input:focus {
+  outline: 2px solid green; /* Change the focus outline color to green */
+}
+
 .movie-results {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
