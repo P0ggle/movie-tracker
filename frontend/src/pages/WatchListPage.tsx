@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getMoviesToWatch } from "../services/api";
 import "./WatchListPage.css";
 
@@ -27,7 +28,12 @@ const WatchListPage: React.FC = () => {
 
   return (
     <div className="watchlist-page">
-      <h1>My Watch List</h1>
+      <div className="watchlist-header">
+        <h1>My Watch List</h1>
+        <Link to="/" className="button-style back-button">
+          Back to Home
+        </Link>
+      </div>
       <div className="watchlist-movies-grid">
         {movies.length > 0 ? (
           movies.map((movie) => (
@@ -44,6 +50,9 @@ const WatchListPage: React.FC = () => {
           <p>No movies in your watch list.</p>
         )}
       </div>
+      <Link to="/" className="button-style">
+        Back to Home
+      </Link>
     </div>
   );
 };

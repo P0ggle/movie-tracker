@@ -25,37 +25,11 @@
   margin-right: 10px;
 }
 
-.search-form button {
-  padding: 10px 20px;
-  font-size: 1em;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.search-form button:hover {
-  background-color: #0056b3;
+.watch-list-link {
+  display: inline-block;
+  margin-top: 20px;
 }
 
 .movie-results {
   margin-top: 20px;
-}
-
-.watch-list-link {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 1em;
-  color: white;
-  background-color: #007bff;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
-
-.watch-list-link:hover {
-  background-color: #0056b3;
 }

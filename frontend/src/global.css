@@ -25,8 +25,9 @@ a:hover {
   text-decoration: underline;
 }
 
-button {
-  background-color: #1e90ff;
+button,
+.button-style {
+  background-color: #1a6e4c;
   color: #ffffff;
   border: none;
   padding: 10px 20px;
@@ -35,6 +36,8 @@ button {
   transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #0056b3;
+button:hover,
+.button-style:hover {
+  background-color: #249c6c;
+  text-decoration: none;
 }

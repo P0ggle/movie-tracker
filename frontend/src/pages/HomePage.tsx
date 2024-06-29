@@ -75,7 +75,7 @@ const HomePage: React.FC = () => {
           <p>No Movie or TV show found</p>
         )}
       </div>
-      <Link to="/watch-list" className="watch-list-link">
+      <Link to="/watch-list" className="button-style watch-list-link">
         Go to Watch List
       </Link>
     </div>

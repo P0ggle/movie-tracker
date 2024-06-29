@@ -5,20 +5,27 @@
   background-color: #121212; /* Dark background for dark mode */
 }
 
-.watchlist-page h1 {
-  font-size: 2.5em;
+.watchlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
+}
+
+.watchlist-header h1 {
+  font-size: 2.5em;
+  margin: 0;
   color: #ffffff; /* Light text color */
 }
 
 .watchlist-movies-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
 }
 
 .watchlist-movie-card {
-  background-color: #333333; /* Dark background for the card */
+  background-color: #333333;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -30,7 +37,7 @@
 }
 
 .watchlist-movie-card h3 {
-  font-size: 0.7em;
+  font-size: 1em;
   margin: 15px 10px;
   height: 3em; /* Fixed height for two lines of text */
   line-height: 1.5em;
@@ -50,7 +57,7 @@
 }
 
 .watchlist-movie-card p {
-  font-size: 0.7em;
+  font-size: 0.9em;
   color: #bbbbbb; /* Light text color for the description */
   padding: 10px;
   margin: 0;
