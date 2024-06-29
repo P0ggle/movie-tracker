@@ -21,6 +21,7 @@ const HomePage: React.FC = () => {
     poster_path: string;
     overview: string;
   } | null>(null);
+  const [added, setAdded] = useState<boolean>(false);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -31,7 +32,7 @@ const HomePage: React.FC = () => {
     if (searchTerm) {
       try {
         const movieData = await searchMovies(searchTerm);
-        setMovies(movieData.slice(0, 4)); // Limit to 4 results
+        setMovies(movieData);
       } catch (error) {
         console.error("Error searching movies:", error);
         setMovies(null); // Clear movies if there's an error
@@ -41,6 +42,7 @@ const HomePage: React.FC = () => {
 
   const handleCardClick = (movie: any) => {
     setSelectedMovie(movie);
+    setAdded(false); // Reset the added state
   };
 
   const handleAddToList = async () => {
@@ -50,10 +52,7 @@ const HomePage: React.FC = () => {
           selectedMovie.original_title || selectedMovie.original_name || "",
           selectedMovie.poster_path,
         );
-        alert(
-          `${selectedMovie.original_title || selectedMovie.original_name} added to your list!`,
-        );
-        setSelectedMovie(null); // Close the popup
+        setAdded(true); // Update the state to reflect the addition
       } catch (error) {
         console.error("Error adding movie to list:", error);
         alert("Failed to add movie to list.");
@@ -74,8 +73,6 @@ const HomePage: React.FC = () => {
         <button type="submit">Search</button>
       </form>
       <div className="movie-results">
-        {" "}
-        {/* Use the watchlist grid class */}
         {movies ? (
           movies.map((movie) => (
             <MovieCard
@@ -106,7 +103,9 @@ const HomePage: React.FC = () => {
               alt={selectedMovie.original_title || selectedMovie.original_name}
             />
             <p>{selectedMovie.overview}</p>
-            <button onClick={handleAddToList}>Add to List</button>
+            <button onClick={handleAddToList} disabled={added}>
+              {added ? "Added!" : "Add to List"}
+            </button>
             <button onClick={() => setSelectedMovie(null)}>Close</button>
           </div>
         </div>

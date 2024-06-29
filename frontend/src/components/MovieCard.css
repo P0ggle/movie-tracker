@@ -7,12 +7,7 @@
   text-align: center;
   transition: transform 0.2s;
   color: #e0e0e0; /* Light text color */
-  width: 150px;
   cursor: pointer;
-}
-
-.movie-card:hover {
-  transform: scale(1.05);
 }
 
 .movie-card img {
@@ -24,7 +19,7 @@
 .movie-card h3 {
   font-size: 1em;
   margin: 10px 0;
-  height: 2em; /* Fixed height to accommodate one or two lines of text */
+  height: 4.5em; /* Fixed height to accommodate one or two lines of text */
   line-height: 1.2em;
   overflow: hidden;
   text-overflow: ellipsis;

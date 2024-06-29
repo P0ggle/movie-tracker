@@ -15,13 +15,18 @@ const MovieCard: React.FC<MovieCardProps> = ({
     poster_path,
     onClick,
 }) => {
+    const placeholderImageUrl =
+        "https://via.placeholder.com/500x750?text=No+Image+Available";
     const posterUrl = poster_path
         ? `https://image.tmdb.org/t/p/w500${poster_path}`
-        : "placeholder_image_url";
+        : placeholderImageUrl;
 
     return (
         <div className="movie-card" onClick={onClick}>
-            <img src={posterUrl} alt={original_title || original_name} />
+            <img
+                src={posterUrl}
+                alt={original_title || original_name || "Movie Poster"}
+            />
             <h3>{original_title || original_name}</h3>
         </div>
     );
