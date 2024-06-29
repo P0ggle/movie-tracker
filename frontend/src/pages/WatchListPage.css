@@ -1,8 +1,16 @@
 /* WatchListPage.css */
 .watchlist-page {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
   text-align: center;
   background-color: #121212; /* Dark background for dark mode */
+}
+
+@media (min-width: 1920px) {
+  .watchlist-page {
+    max-width: 1600px;
+  }
 }
 
 .watchlist-header {

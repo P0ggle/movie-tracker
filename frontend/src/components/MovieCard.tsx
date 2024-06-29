@@ -7,7 +7,7 @@ interface MovieCardProps {
     poster_path: string;
     overview?: string;
     addedDate?: string;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({

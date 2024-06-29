@@ -7,6 +7,12 @@
   background-color: #121212; /* Dark background for dark mode */
 }
 
+@media (min-width: 1920px) {
+  .homepage {
+    max-width: 1600px;
+  }
+}
+
 .search-form {
   display: flex;
   justify-content: center;
