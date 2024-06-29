@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { searchMovie, addMovieToList } from "../services/api";
 import MovieCard from "../components/MovieCard";
 import { Link } from "react-router-dom";
+import "./HomePage.css";
 
 const HomePage: React.FC = () => {
   const [movie, setMovie] = useState<{
@@ -48,8 +49,9 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSearchSubmit}>
+    <div className="homepage">
+      <h1>Movie Search</h1>
+      <form className="search-form" onSubmit={handleSearchSubmit}>
         <input
           type="text"
           value={searchTerm}
@@ -58,7 +60,7 @@ const HomePage: React.FC = () => {
         />
         <button type="submit">Search</button>
       </form>
-      <div>
+      <div className="movie-results">
         {movie ? (
           <div>
             <MovieCard
@@ -73,7 +75,9 @@ const HomePage: React.FC = () => {
           <p>No Movie or TV show found</p>
         )}
       </div>
-      <Link to="/watch-list">Go to Watch List</Link>
+      <Link to="/watch-list" className="watch-list-link">
+        Go to Watch List
+      </Link>
     </div>
   );
 };

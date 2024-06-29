@@ -1,4 +1,5 @@
 import React from "react";
+import "./MovieCard.css";
 
 interface MovieCardProps {
     original_title?: string;
@@ -18,7 +19,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
         : "placeholder_image_url";
 
     return (
-        <div>
+        <div className="movie-card">
             <h3>{original_title || original_name}</h3>
             <img src={posterUrl} alt={original_title || original_name} />
             <p>{overview}</p>

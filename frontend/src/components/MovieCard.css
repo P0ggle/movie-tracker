@@ -1,0 +1,36 @@
+.movie-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.2s;
+  max-width: 300px;
+  margin: 20px auto;
+}
+
+.movie-card h3 {
+  font-size: 1.2em;
+  margin: 15px 10px;
+  height: 3em; /* Fixed height for two lines of text */
+  line-height: 1.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.movie-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.movie-card p {
+  font-size: 0.9em;
+  color: #555;
+  padding: 10px;
+  margin: 0;
+}
