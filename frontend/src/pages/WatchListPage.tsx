@@ -26,12 +26,12 @@ const WatchListPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="watch-list-page">
+    <div className="watchlist-page">
       <h1>My Watch List</h1>
-      <div className="movies-grid">
+      <div className="watchlist-movies-grid">
         {movies.length > 0 ? (
           movies.map((movie) => (
-            <div className="movie-card" key={movie.id}>
+            <div className="watchlist-movie-card" key={movie.id}>
               <h3>{movie.name}</h3>
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}

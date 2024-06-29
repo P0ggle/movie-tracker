@@ -1,5 +1,6 @@
+/* MovieCard.css */
 .movie-card {
-  background-color: #fff;
+  background-color: #333333;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -7,6 +8,7 @@
   transition: transform 0.2s;
   max-width: 300px;
   margin: 20px auto;
+  color: #ffffff;
 }
 
 .movie-card h3 {
@@ -29,8 +31,8 @@
 }
 
 .movie-card p {
-  font-size: 0.9em;
-  color: #555;
+  font-size: 0.7em;
+  color: #ffffff;
   padding: 10px;
   margin: 0;
 }

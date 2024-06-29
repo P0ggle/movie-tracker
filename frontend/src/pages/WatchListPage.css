@@ -1,33 +1,38 @@
 /* WatchListPage.css */
-.watch-list-page {
+.watchlist-page {
   padding: 20px;
+  text-align: center;
+  background-color: #121212; /* Dark background for dark mode */
 }
 
-.movies-grid {
+.watchlist-page h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #ffffff; /* Light text color */
+}
+
+.watchlist-movies-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
 }
 
-.movie-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.watchlist-movie-card {
+  background-color: #333333; /* Dark background for the card */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   text-align: center;
-  box-sizing: border-box;
-}
-
-.movie-card img {
-  width: 100%;
-  height: auto;
+  transition: transform 0.2s;
   max-width: 300px;
-  margin: 0 auto;
-  display: block;
+  margin: 20px auto;
+  color: #e0e0e0; /* Light text color */
 }
 
-.movie-card h3 {
-  font-size: 0.8em;
-  height: 3em;
+.watchlist-movie-card h3 {
+  font-size: 0.7em;
+  margin: 15px 10px;
+  height: 3em; /* Fixed height for two lines of text */
   line-height: 1.5em;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -35,21 +40,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  margin: 0.5em 0;
+  color: #ffffff; /* Light text color for the title */
 }
 
-.movie-card h3::after {
-  content: "";
-  position: absolute;
-  bottom: -0.3em;
-  left: 10%;
-  width: 80%;
-  border-bottom: 2px solid #000;
+.watchlist-movie-card img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-.movie-card p {
+.watchlist-movie-card p {
   font-size: 0.7em;
-  color: #555;
-  margin-top: 10px;
+  color: #bbbbbb; /* Light text color for the description */
+  padding: 10px;
+  margin: 0;
 }
