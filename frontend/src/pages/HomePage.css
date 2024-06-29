@@ -1,13 +1,16 @@
+/* HomePage.css */
 .homepage {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   text-align: center;
+  background-color: #121212; /* Dark background for dark mode */
 }
 
 .homepage h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
+  color: #ffffff; /* Light text color */
 }
 
 .search-form {
@@ -23,13 +26,34 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-right: 10px;
+  background-color: #333333;
+  color: #e0e0e0;
 }
 
-.watch-list-link {
-  display: inline-block;
-  margin-top: 20px;
+.search-form button {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .movie-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.button-style {
+  display: inline-block;
   margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1em;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s;
 }

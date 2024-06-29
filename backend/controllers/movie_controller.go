@@ -30,17 +30,17 @@ func GetMovie(c *gin.Context) {
 func SearchContent(c *gin.Context) {
 	name := c.Query("name")
 	if name == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "name query parameter is required"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Name parameter is required"})
 		return
 	}
 
-	content, err := services.SearchByName(name)
+	movies, err := services.SearchByName(name)
 	if err != nil {
-		log.Println("Error searching content:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, content)
+
+	c.JSON(http.StatusOK, movies)
 }
 
 func AddMovieToList(db *sql.DB) gin.HandlerFunc {

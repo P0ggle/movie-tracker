@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -44,9 +43,8 @@ func FetchMovieFromTMDB(movieID string) (*Movie, error) {
 	return &movie, nil
 }
 
-func SearchByName(name string) (*Movie, error) {
+func SearchByName(name string) ([]Movie, error) {
 	apiKey := os.Getenv("TMDB_API_KEY")
-
 	name = strings.ReplaceAll(strings.TrimSpace(name), " ", ",")
 
 	url := fmt.Sprintf("https://api.themoviedb.org/3/search/multi?api_key=%s&query=%s", apiKey, name)
@@ -60,12 +58,10 @@ func SearchByName(name string) (*Movie, error) {
 		return nil, fmt.Errorf("error: unable to fetch movie data, status code: %d", resp.StatusCode)
 	}
 
-	// Log the raw response
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-	// log.Printf("TMDB API Response: %s", body)
 
 	var searchResults SearchResults
 	if err := json.Unmarshal(body, &searchResults); err != nil {
@@ -76,6 +72,5 @@ func SearchByName(name string) (*Movie, error) {
 		return nil, fmt.Errorf("no results found")
 	}
 
-	log.Printf("TMDB New Response: %+v", &searchResults.Results[0])
-	return &searchResults.Results[0], nil
+	return searchResults.Results, nil
 }
