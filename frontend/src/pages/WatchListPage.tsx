@@ -55,14 +55,18 @@ const WatchListPage: React.FC = () => {
       <div className="watchlist-movies-grid">
         {movies.length > 0 ? (
           movies.map((movie) => (
-            <MovieCard
+            <div
               key={movie.id}
-              original_title={movie.name}
-              poster_path={movie.poster_path}
-              addedDate={movie.time_added}
-              className={movie.watched ? "movie-card-green" : ""}
+              className={`movie-card ${movie.watched ? "movie-card-watched" : ""}`}
               onClick={() => setSelectedMovie(movie)}
-            />
+            >
+              <img
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                alt={movie.name}
+                className="movie-poster"
+              />
+              {movie.watched && <div className="watched-badge">Watched</div>}
+            </div>
           ))
         ) : (
           <p>No movies in your watch list.</p>

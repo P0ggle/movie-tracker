@@ -32,6 +32,43 @@
   gap: 20px;
 }
 
-.movie-card-green {
+.movie-card {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.movie-card-watched {
+  border: 3px solid green;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.6);
+}
+
+.watched-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   background-color: green;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.movie-poster {
+  border-radius: 10px;
+  transition: opacity 0.3s ease;
+}
+
+.movie-card-watched .movie-poster {
+  opacity: 0.7;
 }
