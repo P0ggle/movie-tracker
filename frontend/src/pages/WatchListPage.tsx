@@ -21,7 +21,10 @@ const WatchListPage: React.FC = () => {
     const fetchMovies = async () => {
       try {
         const data = await getMoviesToWatch();
-        setMovies(data);
+        const sortedData = data.sort(
+          (a: MovieToWatch, b: MovieToWatch) => a.id - b.id
+        );
+        setMovies(sortedData);
       } catch (error) {
         console.error("Error fetching movies to watch:", error);
       }
@@ -35,7 +38,7 @@ const WatchListPage: React.FC = () => {
       console.log("Toggling watched status for movie:", movie);
       await updateWatchedStatus(movie.id, !movie.watched);
       const updatedMovies = movies.map((m) =>
-        m.id === movie.id ? { ...m, watched: !m.watched } : m,
+        m.id === movie.id ? { ...m, watched: !m.watched } : m
       );
       setMovies(updatedMovies);
       setSelectedMovie(null);
@@ -55,18 +58,14 @@ const WatchListPage: React.FC = () => {
       <div className="watchlist-movies-grid">
         {movies.length > 0 ? (
           movies.map((movie) => (
-            <div
+            <MovieCard
               key={movie.id}
-              className={`movie-card ${movie.watched ? "movie-card-watched" : ""}`}
+              original_title={movie.name}
+              poster_path={movie.poster_path}
+              addedDate={movie.time_added}
+              className={movie.watched ? "movie-card-watched" : ""}
               onClick={() => setSelectedMovie(movie)}
-            >
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.name}
-                className="movie-poster"
-              />
-              {movie.watched && <div className="watched-badge">Watched</div>}
-            </div>
+            />
           ))
         ) : (
           <p>No movies in your watch list.</p>
@@ -100,3 +99,4 @@ const WatchListPage: React.FC = () => {
 };
 
 export default WatchListPage;
+

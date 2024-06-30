@@ -31,6 +31,9 @@ const MovieCard: React.FC<MovieCardProps> = ({
         src={posterUrl}
         alt={original_title || original_name || "Movie Poster"}
       />
+      {className?.includes("movie-card-watched") && (
+        <div className="watched-badge">Watched</div>
+      )}
       <div className="movie-card-content">
         <h3>{original_title || original_name}</h3>
         {addedDate && (
@@ -44,3 +47,4 @@ const MovieCard: React.FC<MovieCardProps> = ({
 };
 
 export default MovieCard;
+
