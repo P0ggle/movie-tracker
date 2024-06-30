@@ -24,3 +24,9 @@ export const getMoviesToWatch = async () => {
     const response = await axios.get(`${API_URL}/movies-to-watch`);
     return response.data;
 };
+
+export const updateWatchedStatus = async (id: number, watched: boolean) => {
+    const payload = { watched };
+    const response = await axios.put(`${API_URL}/movies/${id}/watched`, payload);
+    return response.data;
+};
