@@ -3,7 +3,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  text-align: center;
   background-color: #121212; /* Dark background for dark mode */
 }
 
@@ -16,7 +15,7 @@
 .watchlist-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end; /* Align items at the bottom */
   margin-bottom: 20px;
 }
 
@@ -24,6 +23,23 @@
   font-size: 2.5em;
   margin: 0;
   color: #ffffff; /* Light text color */
+}
+
+.sort-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  margin-bottom: 5px;
+}
+
+.sort-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.link-to-home {
+  margin-bottom: 5px;
 }
 
 .watchlist-movies-grid {

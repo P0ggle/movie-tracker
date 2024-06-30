@@ -16,14 +16,13 @@ interface MovieToWatch {
 const WatchListPage: React.FC = () => {
   const [movies, setMovies] = useState<MovieToWatch[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<MovieToWatch | null>(null);
+  const [sortOrder, setSortOrder] = useState<"all" | "watched" | "unwatched">("all");
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         const data = await getMoviesToWatch();
-        const sortedData = data.sort(
-          (a: MovieToWatch, b: MovieToWatch) => a.id - b.id
-        );
+        const sortedData = data.sort((a: MovieToWatch, b: MovieToWatch) => a.id - b.id);
         setMovies(sortedData);
       } catch (error) {
         console.error("Error fetching movies to watch:", error);
@@ -47,17 +46,45 @@ const WatchListPage: React.FC = () => {
     }
   };
 
+  const filteredMovies = movies.filter((movie) => {
+    if (sortOrder === "watched") return movie.watched;
+    if (sortOrder === "unwatched") return !movie.watched;
+    return true;
+  });
+
   return (
     <div className="watchlist-page">
       <div className="watchlist-header">
         <h1>My Watch List</h1>
-        <Link to="/" className="button-style back-button">
+        <div className="sort-container">
+          <div className="sort-buttons">
+            <button
+              className={`button-style ${sortOrder === "all" ? "active" : ""}`}
+              onClick={() => setSortOrder("all")}
+            >
+              All
+            </button>
+            <button
+              className={`button-style ${sortOrder === "watched" ? "active" : ""}`}
+              onClick={() => setSortOrder("watched")}
+            >
+              Watched
+            </button>
+            <button
+              className={`button-style ${sortOrder === "unwatched" ? "active" : ""}`}
+              onClick={() => setSortOrder("unwatched")}
+            >
+              Unwatched
+            </button>
+          </div>
+        </div>
+        <Link to="/" className="button-style link-to-home">
           Back to Home
         </Link>
       </div>
       <div className="watchlist-movies-grid">
-        {movies.length > 0 ? (
-          movies.map((movie) => (
+        {filteredMovies.length > 0 ? (
+          filteredMovies.map((movie) => (
             <MovieCard
               key={movie.id}
               original_title={movie.name}
@@ -71,28 +98,20 @@ const WatchListPage: React.FC = () => {
           <p>No movies in your watch list.</p>
         )}
       </div>
-      <Link to="/" className="button-style">
-        Back to Home
-      </Link>
-
       {selectedMovie && (
-        <>
-          <div className="popup" onClick={() => setSelectedMovie(null)}>
-            <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-              <h3>{selectedMovie.name}</h3>
-              <img
-                src={`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`}
-                alt={selectedMovie.name}
-              />
-              <button onClick={() => handleWatchedToggle(selectedMovie)}>
-                {selectedMovie.watched
-                  ? "Mark as Unwatched"
-                  : "Mark as Watched"}
-              </button>
-              <button onClick={() => setSelectedMovie(null)}>Close</button>
-            </div>
+        <div className="popup" onClick={() => setSelectedMovie(null)}>
+          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+            <h3>{selectedMovie.name}</h3>
+            <img
+              src={`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`}
+              alt={selectedMovie.name}
+            />
+            <button onClick={() => handleWatchedToggle(selectedMovie)}>
+              {selectedMovie.watched ? "Mark as Unwatched" : "Mark as Watched"}
+            </button>
+            <button onClick={() => setSelectedMovie(null)}>Close</button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
