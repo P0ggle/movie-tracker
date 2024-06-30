@@ -12,4 +12,5 @@ func RegisterRoutes(router *gin.Engine, db *sql.DB) {
 	router.GET("/movies/:id", controllers.GetMovie)
 	router.POST("/add-to-list", controllers.AddMovieToList(db))
 	router.GET("/movies-to-watch", controllers.GetMoviesToWatch(db))
+	router.PUT("/movies/:id/watched", controllers.UpdateWatchedStatus(db))
 }

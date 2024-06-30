@@ -70,7 +70,7 @@ func AddMovieToList(db *sql.DB) gin.HandlerFunc {
 
 func GetMoviesToWatch(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		rows, err := db.Query("SELECT id, name, poster_path, time_added FROM movies_to_watch")
+		rows, err := db.Query("SELECT id, name, poster_path, time_added, watched FROM movies_to_watch")
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -80,7 +80,7 @@ func GetMoviesToWatch(db *sql.DB) gin.HandlerFunc {
 		var movies []models.MovieToWatch
 		for rows.Next() {
 			var movie models.MovieToWatch
-			if err := rows.Scan(&movie.ID, &movie.Name, &movie.PosterPath, &movie.TimeAdded); err != nil {
+			if err := rows.Scan(&movie.ID, &movie.Name, &movie.PosterPath, &movie.TimeAdded, &movie.Watched); err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 				return
 			}
@@ -93,5 +93,45 @@ func GetMoviesToWatch(db *sql.DB) gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, movies)
+	}
+}
+
+type UpdateWatchedStatusRequest struct {
+	Watched *bool `json:"watched" binding:"required"`
+}
+
+func UpdateWatchedStatus(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var request UpdateWatchedStatusRequest
+		if err := c.ShouldBindJSON(&request); err != nil {
+			log.Printf("Bind JSON error: %v\n", err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		log.Printf("Parsed request: %+v\n", request)
+
+		movieID := c.Param("id")
+		query := `UPDATE movies_to_watch SET watched = $1 WHERE id = $2`
+		result, err := db.Exec(query, *request.Watched, movieID)
+		if err != nil {
+			log.Println("DB error:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		rowsAffected, err := result.RowsAffected()
+		if err != nil {
+			log.Println("Rows affected error:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		if rowsAffected == 0 {
+			log.Println("No rows affected")
+			c.JSON(http.StatusNotFound, gin.H{"error": "Movie not found"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Watched status updated"})
 	}
 }
