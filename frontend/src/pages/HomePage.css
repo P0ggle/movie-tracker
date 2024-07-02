@@ -7,6 +7,7 @@
   background-color: #121212; /* Dark background for dark mode */
 }
 
+/* specifically for ultra-wide screens, such as 4K monitors.  */
 @media (min-width: 1920px) {
   .homepage {
     max-width: 1600px;
