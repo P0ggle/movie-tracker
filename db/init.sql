@@ -1,8 +1,16 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE movies_to_watch (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     poster_path VARCHAR(255) NOT NULL,
     time_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    watched BOOLEAN DEFAULT FALSE
+    watched BOOLEAN DEFAULT FALSE,
+    user_id INT NOT NULL REFERENCES users(id)
 );
-

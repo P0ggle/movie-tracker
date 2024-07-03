@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { searchMovies, addMovieToList } from "../services/api";
 import MovieCard from "../components/MovieCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./HomePage.css";
 import "./Popup.css"; // Import Popup styles
 
@@ -22,6 +22,8 @@ const HomePage: React.FC = () => {
     overview: string;
   } | null>(null);
   const [added, setAdded] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -62,6 +64,10 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="homepage">
+      <div className="auth-buttons">
+        <button className="button-style" onClick={() => navigate("/login")}>Login</button>
+        <button className="button-style" onClick={() => navigate("/signup")}>Register</button>
+      </div>
       <h1>Movie Search</h1>
       <form className="search-form" onSubmit={handleSearchSubmit}>
         <input

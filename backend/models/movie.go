@@ -16,6 +16,7 @@ type MovieToWatch struct {
 	PosterPath string    `json:"poster_path"`
 	TimeAdded  time.Time `json:"time_added"`
 	Watched    bool      `json:"watched"`
+	UserID     int       `json:"user_id"`
 }
 
 type SearchResults struct {

@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"log"
 	"movie-app/models"
 )
 
@@ -10,12 +11,17 @@ type MovieRepository struct {
 }
 
 func (r *MovieRepository) AddMovie(movie *models.MovieToWatch) error {
-	query := `INSERT INTO movies_to_watch (name, poster_path, time_added) VALUES ($1, $2, $3) RETURNING id`
-	return r.DB.QueryRow(query, movie.Name, movie.PosterPath, movie.TimeAdded).Scan(&movie.ID)
+	query := `INSERT INTO movies_to_watch (name, poster_path, time_added, user_id) VALUES ($1, $2, $3, $4) RETURNING id`
+	err := r.DB.QueryRow(query, movie.Name, movie.PosterPath, movie.TimeAdded, movie.UserID).Scan(&movie.ID)
+	if err != nil {
+		log.Printf("Error executing query: %v\n", err)
+		return err
+	}
+	return nil
 }
 
-func (r *MovieRepository) GetMovies() ([]models.MovieToWatch, error) {
-	rows, err := r.DB.Query("SELECT id, name, poster_path, time_added, watched FROM movies_to_watch")
+func (r *MovieRepository) GetMoviesByUser(userID int) ([]models.MovieToWatch, error) {
+	rows, err := r.DB.Query("SELECT id, name, poster_path, time_added, watched FROM movies_to_watch WHERE user_id = $1", userID)
 	if err != nil {
 		return nil, err
 	}
