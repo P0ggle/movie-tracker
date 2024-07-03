@@ -4,24 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"movie-app/models"
 	"net/http"
 	"os"
 	"strings"
 )
 
-type Movie struct {
-	ID            int    `json:"id"`
-	OriginalTitle string `json:"original_title,omitempty"`
-	OriginalName  string `json:"original_name,omitempty"`
-	PosterPath    string `json:"poster_path"`
-	Overview      string `json:"overview"`
-}
-
-type SearchResults struct {
-	Results []Movie `json:"results"`
-}
-
-func FetchMovieFromTMDB(movieID string) (*Movie, error) {
+func FetchMovieFromTMDB(movieID string) (*models.Movie, error) {
 	apiKey := os.Getenv("TMDB_API_KEY")
 	url := fmt.Sprintf("https://api.themoviedb.org/3/movie/%s?api_key=%s", movieID, apiKey)
 
@@ -35,7 +24,7 @@ func FetchMovieFromTMDB(movieID string) (*Movie, error) {
 		return nil, fmt.Errorf("error: unable to fetch movie data, status code: %d", resp.StatusCode)
 	}
 
-	var movie Movie
+	var movie models.Movie
 	if err := json.NewDecoder(resp.Body).Decode(&movie); err != nil {
 		return nil, err
 	}
@@ -43,7 +32,7 @@ func FetchMovieFromTMDB(movieID string) (*Movie, error) {
 	return &movie, nil
 }
 
-func SearchByName(name string) ([]Movie, error) {
+func SearchByName(name string) ([]models.Movie, error) {
 	apiKey := os.Getenv("TMDB_API_KEY")
 	name = strings.ReplaceAll(strings.TrimSpace(name), " ", ",")
 
@@ -63,7 +52,7 @@ func SearchByName(name string) ([]Movie, error) {
 		return nil, err
 	}
 
-	var searchResults SearchResults
+	var searchResults models.SearchResults
 	if err := json.Unmarshal(body, &searchResults); err != nil {
 		return nil, err
 	}
