@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { searchMovies, addMovieToList } from "../services/api";
+import React, { useState, useEffect } from "react";
+import { searchMovies, addMovieToList, logout, getToken, getUser } from "../services/api";
 import MovieCard from "../components/MovieCard";
 import { Link, useNavigate } from "react-router-dom";
 import "./HomePage.css";
@@ -22,8 +22,19 @@ const HomePage: React.FC = () => {
     overview: string;
   } | null>(null);
   const [added, setAdded] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [username, setUsername] = useState<string | null>(null);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = getToken();
+    const user = getUser();
+    if (token && user) {
+      setIsLoggedIn(true);
+      setUsername(user);
+    }
+  }, []);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -62,11 +73,28 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    setIsLoggedIn(false);
+    setUsername(null);
+  };
+
   return (
     <div className="homepage">
       <div className="auth-buttons">
-        <button className="button-style" onClick={() => navigate("/login")}>Login</button>
-        <button className="button-style" onClick={() => navigate("/signup")}>Register</button>
+        {isLoggedIn ? (
+          <>
+            <button className="username-button">
+              <i className="fas fa-user"></i> User: {username}!
+            </button>
+            <button className="button-style" onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <button className="button-style" onClick={() => navigate("/login")}>Login</button>
+            <button className="button-style" onClick={() => navigate("/signup")}>Register</button>
+          </>
+        )}
       </div>
       <h1>Movie Search</h1>
       <form className="search-form" onSubmit={handleSearchSubmit}>

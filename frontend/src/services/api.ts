@@ -6,10 +6,15 @@ const getToken = () => localStorage.getItem("token");
 const setToken = (token: string) => localStorage.setItem("token", token);
 const clearToken = () => localStorage.removeItem("token");
 
+const setUser = (username: string) => localStorage.setItem("username", username);
+const getUser = () => localStorage.getItem("username");
+const clearUser = () => localStorage.removeItem("username");
+
 export const login = async (username: string, password: string) => {
   const response = await axios.post(`${API_URL}/login`, { username, password });
   if (response.data.token) {
     setToken(response.data.token);
+    setUser(username); // Store the username
   }
   return response.data;
 };
@@ -35,17 +40,17 @@ export const searchMovies = async (name: string) => {
 };
 
 export const addMovieToList = async (name: string, posterPath: string) => {
-    const response = await axios.post(
-      `${API_URL}/add-to-list`,
-      { name, poster_path: posterPath },
-      {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      }
-    );
-    return response.data;
-  };
+  const response = await axios.post(
+    `${API_URL}/add-to-list`,
+    { name, poster_path: posterPath },
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    }
+  );
+  return response.data;
+};
 
 export const getMoviesToWatch = async () => {
   const response = await axios.get(`${API_URL}/movies-to-watch`, {
@@ -64,6 +69,7 @@ export const updateWatchedStatus = async (id: number, watched: boolean) => {
 
 export const logout = () => {
   clearToken();
+  clearUser();
 };
 
-export { getToken };
+export { getToken, getUser };
