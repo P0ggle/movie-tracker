@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signup } from "../services/api";
+import "./SignupPage.css";
 
 const SignupPage: React.FC = () => {
   const [username, setUsername] = useState("");
