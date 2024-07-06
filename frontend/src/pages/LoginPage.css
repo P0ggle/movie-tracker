@@ -1,33 +1,53 @@
 /* LoginPage.css */
 .login-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #121212; /* Dark background to match global style */
+  color: #e0e0e0;
+}
+
+.login-form-container {
   max-width: 400px;
-  margin: 100px auto;
+  width: 100%;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  background-color: #1e1e1e; /* Dark background for the form container */
 }
 
-.login-page h1 {
+.login-form-container h1 {
   text-align: center;
 }
 
-.login-page form {
+.login-form-container form {
   display: flex;
   flex-direction: column;
 }
 
-.login-page input {
+.login-form-container input {
   margin-bottom: 15px;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: #333333;
+  color: #e0e0e0;
 }
 
-.login-page button {
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.login-form-container input::placeholder {
+  color: #e0e0e0;
+}
+
+.login-form-container input:focus {
+  outline: none;
+  border-color: #1a6e4c;
+}
+
+.top-right-link {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
