@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { searchMovies, addMovieToList, logout, getToken, getUser } from "../services/api";
+import {
+  searchMovies,
+  addMovieToList,
+  logout,
+  getToken,
+  getUser,
+} from "../services/api";
 import MovieCard from "../components/MovieCard";
 import { Link, useNavigate } from "react-router-dom";
 import "./HomePage.css";
 import "./Popup.css"; // Import Popup styles
+import LogoutConfirmationPopup from "../components/LogoutConfirmationPopUp";
 
 const HomePage: React.FC = () => {
   const [movies, setMovies] = useState<Array<{
@@ -25,6 +32,7 @@ const HomePage: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [username, setUsername] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const [showLogoutPopup, setShowLogoutPopup] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -76,9 +84,18 @@ const HomePage: React.FC = () => {
   };
 
   const handleLogout = () => {
+    setShowLogoutPopup(true);
+  };
+
+  const confirmLogout = () => {
     logout();
     setIsLoggedIn(false);
     setUsername(null);
+    setShowLogoutPopup(false);
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutPopup(false);
   };
 
   return (
@@ -89,12 +106,21 @@ const HomePage: React.FC = () => {
             <button className="username-button">
               <i className="fas fa-user"></i> User: {username}!
             </button>
-            <button className="button-style" onClick={handleLogout}>Logout</button>
+            <button className="button-style" onClick={handleLogout}>
+              Logout
+            </button>
           </>
         ) : (
           <>
-            <button className="button-style" onClick={() => navigate("/login")}>Login</button>
-            <button className="button-style" onClick={() => navigate("/signup")}>Register</button>
+            <button className="button-style" onClick={() => navigate("/login")}>
+              Login
+            </button>
+            <button
+              className="button-style"
+              onClick={() => navigate("/signup")}
+            >
+              Register
+            </button>
           </>
         )}
       </div>
@@ -109,8 +135,8 @@ const HomePage: React.FC = () => {
         <button type="submit">Search</button>
       </form>
       <div className="movie-results">
-        {movies ? (
-          movies.map((movie) => (
+        {movies
+          ? movies.map((movie) => (
             <MovieCard
               key={movie.id}
               original_title={movie.original_title}
@@ -120,9 +146,7 @@ const HomePage: React.FC = () => {
               onClick={() => handleCardClick(movie)}
             />
           ))
-        ) : (
-          hasSearched && <p>No Movie or TV show found</p>
-        )}
+          : hasSearched && <p>No Movie or TV show found</p>}
       </div>
       <Link to="/watch-list" className="button-style watch-list-link">
         Go to Watch List
@@ -146,9 +170,16 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {showLogoutPopup && (
+        <LogoutConfirmationPopup
+          username={username}
+          onConfirm={confirmLogout}
+          onCancel={cancelLogout}
+        />
+      )}
     </div>
   );
 };
 
 export default HomePage;
-
