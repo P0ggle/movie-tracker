@@ -24,6 +24,7 @@ const HomePage: React.FC = () => {
   const [added, setAdded] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [username, setUsername] = useState<string | null>(null);
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -50,6 +51,7 @@ const HomePage: React.FC = () => {
         console.error("Error searching movies:", error);
         setMovies(null); // Clear movies if there's an error
       }
+      setHasSearched(true);
     }
   };
 
@@ -119,7 +121,7 @@ const HomePage: React.FC = () => {
             />
           ))
         ) : (
-          <p>No Movie or TV show found</p>
+          hasSearched && <p>No Movie or TV show found</p>
         )}
       </div>
       <Link to="/watch-list" className="button-style watch-list-link">
@@ -149,3 +151,4 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+
