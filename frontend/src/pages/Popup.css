@@ -10,6 +10,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  overflow: auto; /* Ensure the content can scroll if it's too large */
 }
 
 .popup-content {
@@ -19,14 +20,14 @@
   max-width: 500px;
   width: 100%;
   text-align: center;
-  padding: 15px;
+  max-height: 90%; /* Ensure the content does not exceed the viewport height */
+  overflow: auto; /* Scroll if content exceeds the viewport height */
 }
 
 .popup-content img {
+  max-width: 100%; /* Ensure the image fits within the content area */
   height: auto;
   border-radius: 15px;
-  /* border-top-left-radius: 15px; */
-  /* border-top-right-radius: 15px; */
   margin-bottom: 20px;
 }
 
@@ -41,14 +42,15 @@
   transition: background-color 0.3s;
 }
 
-/* Media Queries for responsiveness */
-@media (max-width: 768px) {
-  .popup-content {
-    padding: 15px;
+/* Media queries to adjust the image size based on the screen size */
+@media (max-height: 800px) {
+  .popup-content img {
+    max-height: 50vh; /* Set a maximum height of 50% of the viewport height */
   }
+}
 
-  .popup-content button {
-    padding: 10px;
-    font-size: 0.9em;
+@media (max-width: 500px) {
+  .popup-content img {
+    max-height: 50vw; /* Set a maximum height of 50% of the viewport width */
   }
 }
