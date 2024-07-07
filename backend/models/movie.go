@@ -3,11 +3,12 @@ package models
 import "time"
 
 type Movie struct {
-	ID            int    `json:"id"`
-	OriginalTitle string `json:"original_title,omitempty"`
-	OriginalName  string `json:"original_name,omitempty"`
-	PosterPath    string `json:"poster_path"`
-	Overview      string `json:"overview"`
+	ID               int    `json:"id"`
+	OriginalTitle    string `json:"original_title,omitempty"`
+	OriginalName     string `json:"original_name,omitempty"`
+	PosterPath       string `json:"poster_path"`
+	Overview         string `json:"overview"`
+	OriginalLanguage string `json:"original_language"`
 }
 
 type MovieToWatch struct {

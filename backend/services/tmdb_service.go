@@ -36,7 +36,7 @@ func SearchByName(name string) ([]models.Movie, error) {
 	apiKey := os.Getenv("TMDB_API_KEY")
 	name = strings.ReplaceAll(strings.TrimSpace(name), " ", ",")
 
-	url := fmt.Sprintf("https://api.themoviedb.org/3/search/multi?api_key=%s&query=%s", apiKey, name)
+	url := fmt.Sprintf("https://api.themoviedb.org/3/search/multi?api_key=%s&query=%s&include_adult=false&language=en-US&page=1", apiKey, name)
 	resp, err := http.DefaultClient.Get(url)
 	if err != nil {
 		return nil, err
@@ -61,5 +61,18 @@ func SearchByName(name string) ([]models.Movie, error) {
 		return nil, fmt.Errorf("no results found")
 	}
 
-	return searchResults.Results, nil
+	// Filter results to include only English-language movies and TV shows
+	var filteredResults []models.Movie
+	for _, result := range searchResults.Results {
+		if result.OriginalLanguage == "en" {
+			filteredResults = append(filteredResults, result)
+		}
+	}
+
+	// Return only the first 10 filtered results if there are more than 10
+	if len(filteredResults) > 10 {
+		return filteredResults[:10], nil
+	}
+
+	return filteredResults, nil
 }
