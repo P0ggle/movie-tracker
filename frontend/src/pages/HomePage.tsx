@@ -155,13 +155,13 @@ const HomePage: React.FC = () => {
       {selectedMovie && (
         <div className="popup">
           <div className="popup-content">
-            <h3>
-              {selectedMovie.original_title || selectedMovie.original_name}
-            </h3>
             <img
               src={`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`}
               alt={selectedMovie.original_title || selectedMovie.original_name}
             />
+            <h3>
+              {selectedMovie.original_title || selectedMovie.original_name}
+            </h3>
             <p>{selectedMovie.overview}</p>
             <button onClick={handleAddToList} disabled={added}>
               {added ? "Added!" : "Add to List"}

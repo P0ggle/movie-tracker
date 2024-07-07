@@ -14,16 +14,19 @@
 
 .popup-content {
   background: #2c2c2c;
-  padding: 20px;
+  padding-bottom: 20px;
   border-radius: 10px;
   max-width: 500px;
   width: 100%;
   text-align: center;
+  padding: 15px;
 }
 
 .popup-content img {
-  max-width: 100%;
   height: auto;
+  border-radius: 15px;
+  /* border-top-left-radius: 15px; */
+  /* border-top-right-radius: 15px; */
   margin-bottom: 20px;
 }
 
@@ -36,4 +39,16 @@
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  .popup-content {
+    padding: 15px;
+  }
+
+  .popup-content button {
+    padding: 10px;
+    font-size: 0.9em;
+  }
 }
