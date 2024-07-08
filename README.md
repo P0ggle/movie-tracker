@@ -57,3 +57,7 @@ npm start
 ```sh
 docker-compose up --build -d
 ```
+
+Hosting Information
+
+This application is hosted on https://poggle.cloud
