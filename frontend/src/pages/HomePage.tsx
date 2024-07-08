@@ -103,8 +103,8 @@ const HomePage: React.FC = () => {
       <div className="auth-buttons">
         {isLoggedIn ? (
           <>
-            <button className="username-button">
-              <i className="fas fa-user"></i> User: {username}!
+            <button className="button-style" >
+              Welcome, {username}
             </button>
             <button className="button-style" onClick={handleLogout}>
               Logout
