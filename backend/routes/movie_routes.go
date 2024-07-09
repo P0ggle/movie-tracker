@@ -2,9 +2,10 @@ package routes
 
 import (
 	"database/sql"
-	"log"
 	"movie-app/controllers"
+	"movie-app/models" // Ensure this import is present
 	"movie-app/repositories"
+	"movie-app/services"
 	"net/http"
 	"strings"
 
@@ -13,10 +14,14 @@ import (
 )
 
 func RegisterRoutes(router *gin.Engine, db *sql.DB) {
-	movieRepo := &repositories.MovieRepository{DB: db}
 	userRepo := &repositories.UserRepository{DB: db}
-	movieController := controllers.NewMovieController(movieRepo, userRepo)
-	authController := controllers.NewAuthController(userRepo)
+	movieRepo := &repositories.MovieRepository{DB: db}
+
+	authService := services.NewAuthService(userRepo)
+	movieService := services.NewMovieService(movieRepo, userRepo)
+
+	authController := controllers.NewAuthController(authService)
+	movieController := controllers.NewMovieController(movieService)
 
 	router.POST("/signup", authController.Signup)
 	router.POST("/login", authController.Login)
@@ -44,9 +49,9 @@ func AuthMiddleware() gin.HandlerFunc {
 			tokenString = tokenString[7:]
 		}
 
-		claims := &controllers.Claims{}
+		claims := &models.Claims{}
 		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-			return controllers.JwtKey, nil
+			return services.JwtKey, nil
 		})
 
 		if err != nil || !token.Valid {
@@ -54,8 +59,6 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
-		log.Printf("Authenticated user: %s", claims.Username)
 
 		c.Set("username", claims.Username)
 		c.Next()
