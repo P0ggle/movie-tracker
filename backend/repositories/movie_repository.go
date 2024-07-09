@@ -48,3 +48,4 @@ func (r *MovieRepository) UpdateWatchedStatus(movieID int, watched bool) (int64,
 
 	return result.RowsAffected()
 }
+

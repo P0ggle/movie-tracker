@@ -5,12 +5,23 @@ import (
 	"fmt"
 	"io"
 	"movie-app/models"
+	"movie-app/repositories"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
-func FetchMovieFromTMDB(movieID string) (*models.Movie, error) {
+type MovieService struct {
+	MovieRepo *repositories.MovieRepository
+	UserRepo  *repositories.UserRepository
+}
+
+func NewMovieService(movieRepo *repositories.MovieRepository, userRepo *repositories.UserRepository) *MovieService {
+	return &MovieService{MovieRepo: movieRepo, UserRepo: userRepo}
+}
+
+func (ms *MovieService) FetchMovieFromTMDB(movieID string) (*models.Movie, error) {
 	apiKey := os.Getenv("TMDB_API_KEY")
 	url := fmt.Sprintf("https://api.themoviedb.org/3/movie/%s?api_key=%s", movieID, apiKey)
 
@@ -32,7 +43,7 @@ func FetchMovieFromTMDB(movieID string) (*models.Movie, error) {
 	return &movie, nil
 }
 
-func SearchByName(name string) ([]models.Movie, error) {
+func (ms *MovieService) SearchByName(name string) ([]models.Movie, error) {
 	apiKey := os.Getenv("TMDB_API_KEY")
 	name = strings.ReplaceAll(strings.TrimSpace(name), " ", ",")
 
@@ -61,7 +72,6 @@ func SearchByName(name string) ([]models.Movie, error) {
 		return nil, fmt.Errorf("no results found")
 	}
 
-	// Filter results to include only English-language movies and TV shows
 	var filteredResults []models.Movie
 	for _, result := range searchResults.Results {
 		if result.OriginalLanguage == "en" {
@@ -69,10 +79,41 @@ func SearchByName(name string) ([]models.Movie, error) {
 		}
 	}
 
-	// Return only the first 10 filtered results if there are more than 10
 	if len(filteredResults) > 10 {
 		return filteredResults[:10], nil
 	}
 
 	return filteredResults, nil
+}
+
+func (ms *MovieService) AddMovieToList(request *models.MovieToWatch) error {
+	user, err := ms.UserRepo.GetUserByUsername(request.Username)
+	if err != nil {
+		return err
+	}
+
+	request.TimeAdded = time.Now()
+	request.UserID = user.ID
+	return ms.MovieRepo.AddMovie(request)
+}
+
+func (ms *MovieService) GetMoviesToWatch(username string) ([]models.MovieToWatch, error) {
+	user, err := ms.UserRepo.GetUserByUsername(username)
+	if err != nil {
+		return nil, err
+	}
+
+	return ms.MovieRepo.GetMoviesByUser(user.ID)
+}
+
+func (ms *MovieService) UpdateWatchedStatus(movieID int, watched bool) error {
+	rowsAffected, err := ms.MovieRepo.UpdateWatchedStatus(movieID, watched)
+	if err != nil {
+		return err
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("movie not found")
+	}
+
+	return nil
 }

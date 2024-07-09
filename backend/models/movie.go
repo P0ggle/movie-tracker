@@ -18,6 +18,7 @@ type MovieToWatch struct {
 	TimeAdded  time.Time `json:"time_added"`
 	Watched    bool      `json:"watched"`
 	UserID     int       `json:"user_id"`
+	Username   string    `json:"username"`
 }
 
 type SearchResults struct {
